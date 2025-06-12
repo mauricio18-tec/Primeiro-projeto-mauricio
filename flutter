@@ -1,0 +1,93 @@
+// main.dart
+import 'package:flutter/material.dart';
+import 'screens/home_screen.dart';
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Calculadora de Receitas',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: HomeScreen(),
+    );
+  }
+}// models/receita.dart
+class Receita {
+  String id;
+  String nome;
+  String categoria;
+  int rendimento;
+  List<Ingrediente> ingredientes;
+  String modoPreparo;
+  bool isFavorito;
+
+  Receita({
+    required this.nome,
+    this.rendimento = 1,
+    this.categoria = 'Geral',
+    this.ingredientes = const [],
+    this.modoPreparo = '',
+    this.isFavorito = false,
+  }) : id = DateTime.now().toString();
+}// screens/home_screen.dart
+class HomeScreen extends StatefulWidget {
+  @override
+  _HomeScreenState createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  List<Receita> receitas = [];
+  Receita receitaAtual = Receita(nome: 'Nova Receita');
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Calculadora de Receitas'),
+        actions: [
+          IconButton(
+            icon: Icon(receitaAtual.isFavorito ? Icons.star : Icons.star_border),
+            onPressed: _toggleFavorito,
+          ),
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            _buildInfoReceita(),
+            _buildIngredientes(),
+            _buildCalculadora(),
+            _buildTimerSection(),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.picture_as_pdf),
+        onPressed: _exportarPDF,
+      ),
+    );
+  }
+
+  Widget _buildInfoReceita() {
+    return Card(/*...*/); // Campo para nome, categoria e rendimento
+  }
+
+  void _toggleFavorito() {
+    setState(() {
+      receitaAtual.isFavorito = !receitaAtual.isFavorito;
+    });
+  }
+
+  void _exportarPDF() async {
+    // Implementação do PDF
+  }
+}
